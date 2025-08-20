@@ -7,9 +7,11 @@ This is the backend service for **RoadmapHub**, a tool to help teams manage publ
 - Express
 
 ##  Folder Structure
-- `index.js` – Entry point
-- `routes/` – (Coming soon) API routes
-- `controllers/` – (Coming soon) Logic for handling requests
+- index.js – Entry point
+- routes/ – API routes
+- controllers/ – Logic for handling requests
+- models/ – Mongoose schemas (User, Feedback, RoadmapItem)
+- config/ – Database connection and environment setup
 
 ##  Getting Started
 
