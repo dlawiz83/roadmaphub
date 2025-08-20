@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index",
-    "dev": "node --watch --env-file=.env index"
+    "start": "node backend/index",
+    "dev": "node --watch --env-file=.env backend/index"
   },
   "repository": {
     "type": "git",
