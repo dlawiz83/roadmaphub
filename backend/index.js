@@ -1,7 +1,7 @@
 const express = require("express");
 const dotenv = require('dotenv').config();
 const {connectDB} = require("./config/db");
-
+const PORT = 8000;
 
 connectDB();
 
@@ -14,5 +14,5 @@ app.use(express.urlencoded({ extended: true }));
 // Routes
 app.use("/api/auth", require("./routes/authRoutes"));
 
-const PORT = process.env.PORT;
+
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
