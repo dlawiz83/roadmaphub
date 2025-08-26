@@ -9,12 +9,7 @@ const getRoadmapItem = asyncHandler(async(req, res)=>{
         res.status(404)
         throw new Error('Roadmap not found')
     }
-   
-    if(roadmapItem.userId.toString() !== req.user.id){
-        res.status(401)
-        throw new Error('User not authorized');
-
-    }
+    
     res.status(200).json(roadmapItem);
 })
 
@@ -47,12 +42,12 @@ const updateRoadmapItem = asyncHandler(async(req, res)=>{
         res.status(404)
         throw new Error('Roadmap not found')
     }
+    if(req.user.role !== "admin" && roadmap.userId.toString() !== req.user.id) {
+    res.status(403)
+    throw new Error("Not authorized to update this item");
+}
    
-    if(roadmap.userId.toString() !== req.user.id){
-        res.status(401)
-        throw new Error('User not authorized');
 
-    }
     const updatedRoadmap = await Roadmap.findByIdAndUpdate(req.params.id, req.body, {new: true});
     res.status(200).json(updatedRoadmap);
     
@@ -65,12 +60,12 @@ const deleteRoadmapItem = asyncHandler(async(req, res)=>{
         res.status(404)
         throw new Error('Roadmap not found')
     }
+    if(req.user.role !== "admin" && roadmap.userId.toString() !== req.user.id) {
+    res.status(403)
+    throw new Error("Not authorized to delete this item");
+}
     
-    if(deleteRoadmap.userId.toString() !== req.user.id){
-        res.status(401)
-        throw new Error('User not authorized');
 
-    }
     await Roadmap.findByIdAndDelete(req.params.id);
     res.status(200).json({message: 'Roadmap deleted',id: req.params.id});
     
@@ -78,11 +73,24 @@ const deleteRoadmapItem = asyncHandler(async(req, res)=>{
 
 
 const getRoadmapItems = asyncHandler(async(req, res)=>{
-   const roadmapItems = await Roadmap.find({
-  $or: [{ userId: req.user.id }, { isPublic: true }]
-});
+    let roadmapItems;
+
+    if(req.user.role === "admin") {
+        // Admin sees all roadmap items
+        roadmapItems = await Roadmap.find({});
+    } else {
+        // Normal users see their own items and public items
+        roadmapItems = await Roadmap.find({
+            $or: [
+                { userId: req.user.id }, 
+                { isPublic: true }
+            ]
+        });
+    }
+
     res.status(200).json(roadmapItems);
-})
+});
+
 
 module.exports = {
     getRoadmapItem, getRoadmapItems,

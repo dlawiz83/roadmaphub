@@ -42,11 +42,17 @@ Responses:
 
 ### GET /api/feedback
 
-Get all feedback created by the logged-in user.
+Behavior:
+
+Users: see only their own feedback
+
+Admins: see all feedback
 
 Responses:
 
-200 OK
+200 OK → Array of feedback objects
+
+401 Unauthorized → Missing/invalid token
 
 [
 {
@@ -65,11 +71,15 @@ Responses:
 }
 ]
 
-401 Unauthorized → Missing/invalid token
-
 ### GET /api/feedback/:id
 
 Get a single feedback item by ID.
+
+Behavior:
+
+Users: can view only their own feedback
+
+Admins: can view any feedback
 
 Responses:
 
@@ -77,11 +87,15 @@ Responses:
 
 404 Not Found → Feedback does not exist
 
-401 Unauthorized → User does not own this feedback
+403 Forbidden → User not authorized to view
 
 ### PUT /api/feedback/:id
 
 Update a feedback item.
+Behavior:
+
+Users: can update only their own feedback
+Admins: can update any feedback
 
 Request Body (any fields you want to update):
 
@@ -101,6 +115,12 @@ Responses:
 ### DELETE /api/feedback/:id
 
 Delete a feedback item.
+
+Behavior:
+
+Users: can delete only their own feedback
+
+Admins: can delete any feedback
 
 Responses:
 
@@ -139,7 +159,11 @@ Responses:
 
 ### GET /api/roadmap
 
-Get all roadmap items for the logged-in user plus public items.
+Behavior:
+
+Users: see their own items + public items
+
+Admins: see all roadmap items
 
 Responses:
 
@@ -150,6 +174,12 @@ Responses:
 ### GET /api/roadmap/:id
 
 Get a single roadmap item by ID.
+
+Behavior:
+
+Users: can view their own items or public items
+
+Admins: can view any roadmap item
 
 Responses:
 
@@ -162,6 +192,12 @@ Responses:
 ### PUT /api/roadmap/:id
 
 Update a roadmap item.
+
+Behavior:
+
+Users: can update only their own roadmap items
+
+Admins: can update any roadmap item
 
 Request Body (any fields you want to update):
 
@@ -181,6 +217,12 @@ Responses:
 ### DELETE /api/roadmap/:id
 
 Delete a roadmap item.
+
+Behavior:
+
+Users: can delete only their own roadmap items
+
+Admins: can delete any roadmap item
 
 Responses:
 

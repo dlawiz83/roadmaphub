@@ -29,30 +29,22 @@ const getFeedback = asyncHandler(async(req,res)=>{
         throw new Error('Feedback not found');
     }
 
-    if(feedbackItem.userId.toString() !==req.user.id){
-        res.status(401)
-        throw new Error('User not authorized to view this feedback')
-    }
     res.status(200).json(feedbackItem);
 
 })
-//PUT /api/feedback:id
 
+//PUT /api/feedback:id
 const UpdateFeedback = asyncHandler(async(req,res)=>{
     const feedback = await Feedback.findById(req.params.id);
     if(!feedback){
         res.status(404)
         throw new Error('Feedback not found');
     }
-   const user  = await User.findById(req.user.id);
-   if(!user){
-    res.status(401);
-    throw new Error('User not found');
-   }
-   if(feedback.userId.toString() !== req.user.id){
-    res.status(401);
-    throw new Error('User not authorized');
-   }
+ if (req.user.role !== "admin" && feedback.userId.toString() !== req.user.id) {
+    res.status(403);
+    throw new Error("Not authorized to update this feedback");
+}
+
 
 
     const updatedFeedback = await Feedback.findByIdAndUpdate(req.params.id, req.body,  {new: true})
@@ -67,15 +59,12 @@ const deleteFeedback = asyncHandler(async(req,res)=>{
         res.status(404)
         throw new Error('Feedback not found');
     }
-   const user  = await User.findById(req.user.id);
-   if(!user){
-    res.status(401);
-    throw new Error('User not found');
-   }
-   if(delFeedback.userId.toString() !== req.user.id){
-    res.status(401);
-    throw new Error('User not authorized');
-   }
+    if (req.user.role !== "admin" && feedback.userId.toString() !== req.user.id) {
+    res.status(403);
+    throw new Error("Not authorized to delete this feedback");
+}
+
+   
    await Feedback.findByIdAndDelete(req.params.id);
    res.status(200).json({message: "Feedback deleted", id: req.params.id});
 
@@ -84,8 +73,17 @@ const deleteFeedback = asyncHandler(async(req,res)=>{
 //GET /api/feedback
 
 const getAllFeedback = asyncHandler(async(req,res)=>{
-    const feedackItems = await Feedback.find({userId: req.user.id})
-    res.status(200).json(feedackItems);
+    let feedbackItems;
+
+    if(req.user.role === "admin") {
+        // Admin sees all feedback
+        feedbackItems = await Feedback.find({});
+    } else {
+        // Normal users see only their own feedback
+        feedbackItems = await Feedback.find({userId: req.user.id});
+    }
+
+    res.status(200).json(feedbackItems);
 
 })
 
