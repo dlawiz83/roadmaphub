@@ -1,17 +1,26 @@
-# RoadmapHub – Backend
+# RoadmapHub
 
-This is the backend service for **RoadmapHub**, a tool to help teams manage public product roadmaps and collect user feedback.
+RoadmapHub is a full-stack web application designed to help teams manage product roadmaps and collect user feedback efficiently. The platform supports real-time collaboration, feedback aggregation, and role-based permissions for admins and users.
+
+
+---
 
 ## Tech Stack
-- Node.js
-- Express
+- **Backend:** Node.js, Express, MongoDB, Mongoose  
+- **Frontend:** React, React Router v6, Tailwind CSS, React Hook Form  
+- **Authentication:** JWT, bcrypt  
+- **Dev Tools:** ESLint, Prettier, Postman
 
-##  Folder Structure
-- index.js – Entry point
-- routes/ – API routes
-- controllers/ – Logic for handling requests
-- models/ – Mongoose schemas (User, Feedback, RoadmapItem)
-- config/ – Database connection and environment setup
+  ---
+
+## Features
+- **User Authentication:** Signup, login, and role-based access (admin vs. user)  
+- **Roadmap Management:** Create, update, and visualize product roadmap items  
+- **Feedback Collection:** Submit, view, and filter user feedback  
+- **Real-Time Collaboration:** Update roadmap and feedback dynamically  
+- **Responsive UI:** Tailwind CSS-powered components for desktop and mobile  
+- **Pipeline & Permissions:** Admins can manage items; users can submit feedback  
+
 
 ##  Getting Started
 
